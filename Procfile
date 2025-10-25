@@ -1,0 +1,1 @@
+web: gunicorn country_currency_exchange_project.wsgi --log-file -
