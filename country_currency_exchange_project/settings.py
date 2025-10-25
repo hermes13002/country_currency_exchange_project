@@ -142,3 +142,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CACHE_DIR = BASE_DIR / 'cache'
 os.makedirs(CACHE_DIR, exist_ok=True)
 SUMMARY_IMAGE_PATH = CACHE_DIR / 'summary.png'
+
+# celery configuration
+CELERY_BROKER_URL = os.getenv('REDIS_URL')
+CELERY_RESULT_BACKEND = os.getenv('REDIS_URL')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'

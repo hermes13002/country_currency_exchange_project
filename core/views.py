@@ -8,17 +8,23 @@ from django_filters import rest_framework as django_filters
 
 from .models import Country, RefreshLog
 from .serializers import CountrySerializer, RefreshLogSerializer
-from .services import run_country_refresh, ExternalApiException
+# from .services import run_country_refresh, ExternalApiException
 from .filters import CountryFilter, CustomSortFilter
+from .tasks import run_country_refresh, ExternalApiException
 
 class RefreshCountriesView(APIView):
     def post(self, request, *args, **kwargs):
         try:
         
-            count = run_country_refresh()
+            # count = run_country_refresh()
+            # return Response(
+            #     {"status": "success", "message": f"Successfully refreshed {count} countries."},
+            #     status=status.HTTP_200_OK
+            # )
+            run_country_refresh.delay()
             return Response(
-                {"status": "success", "message": f"Successfully refreshed {count} countries."},
-                status=status.HTTP_200_OK
+                {"message": "Refresh task has been queued and will be processed in the background."},
+                status=status.HTTP_202_ACCEPTED
             )
         except ExternalApiException as e:
             return Response(
@@ -26,8 +32,12 @@ class RefreshCountriesView(APIView):
                 status=status.HTTP_503_SERVICE_UNAVAILABLE
             )
         except Exception as e:
+            # return Response(
+            #     {"error": "Internal server error", "details": str(e)},
+            #     status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            # )
             return Response(
-                {"error": "Internal server error", "details": str(e)},
+                {"error": "Failed to queue refresh task", "details": str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
