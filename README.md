@@ -7,7 +7,7 @@ This is a Django REST Framework API I built for the HNG Backend Track Stage 1 as
 ## 🧩 Features
 
 -   **Asynchronous Data Refresh**: The main data-fetching operation
-    (`/api/countries/refresh`) is handled by a Celery worker, providing
+    (`/countries/refresh`) is handled by a Celery worker, providing
     an immediate API response (202 Accepted).
 -   **External Data Caching**: Fetches and combines data from
     restcountries.com (for country info) and open.er-api.com (for
@@ -15,9 +15,9 @@ This is a Django REST Framework API I built for the HNG Backend Track Stage 1 as
 -   **GDP Estimation**: Computes an `estimated_gdp` for each country
     based on its population and USD exchange rate.
 -   **Dynamic Image Generation**: Creates and serves a dynamic summary
-    image (`/api/countries/image`) showing the top 5 countries by GDP
+    image (`/countries/image`) showing the top 5 countries by GDP
     and the last refresh time.
--   **Filtering & Sorting**: The main `/api/countries` endpoint supports
+-   **Filtering & Sorting**: The main `/countries` endpoint supports
     filtering by region and currency, as well as sorting by GDP.
 -   **Deployment Ready**: Configured for production deployment with
     Gunicorn, Celery, Redis, and MySQL (e.g., on Railway or similar
